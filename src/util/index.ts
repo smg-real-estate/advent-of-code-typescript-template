@@ -1,4 +1,5 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'fs';
+import {  readFileSync } from 'fs';
+import * as path from 'path';
 
 export const formatDay = (day: number | string) =>
   day.toString().padStart(2, '0');
@@ -13,22 +14,22 @@ interface SplitOptions<T> {
   mapper?: ((e: string, i: number, a: string[]) => T) | false;
 }
 
-export function parseInput(): number[];
-export function parseInput(options: { split: false }): string;
-export function parseInput(options: {
+export function parseInput(path: string): number[];
+export function parseInput(path: string, options: { split: false }): string;
+export function parseInput(path: string, options: {
   split: { delimiter?: string; mapper: false };
 }): string[];
-export function parseInput(options: { split: { delimiter: string } }): number[];
-export function parseInput<T>(options: { split: SplitOptions<T> }): T[];
+export function parseInput(path: string, options: { split: { delimiter: string } }): number[];
+export function parseInput<T>(path: string, options: { split: SplitOptions<T> }): T[];
 /**
  * Parse the input from {day}/input.txt
  * @param {SplitOptions} [split]
  */
-export function parseInput<T>({
+export function parseInput<T>(path: string, {
   split,
 }: { split?: SplitOptions<T> | false } = {}) {
   const input = readFileSync(
-    `./src/day${formatDay(process.env.npm_config_day!)}/input.txt`,
+    path,
     {
       encoding: 'utf-8',
     }
@@ -43,18 +44,3 @@ export function parseInput<T>({
     ? splitted
     : splitted.map((...args) => mapper?.(...args) ?? Number(args[0]));
 }
-
-const genTemplate = (part: 1 | 2) => `import { parseInput } from '../util';
-
-const input = parseInput();
-
-// TODO: Complete Part ${part}
-`;
-
-export const setupDay = (day: number) => {
-  const dir = `./src/day${formatDay(day)}`;
-  mkdirSync(dir);
-  writeFileSync(`${dir}/input.txt`, '');
-  writeFileSync(`${dir}/part1.ts`, genTemplate(1));
-  writeFileSync(`${dir}/part2.ts`, genTemplate(2));
-};

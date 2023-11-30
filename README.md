@@ -1,10 +1,10 @@
 ## Usage
 
 ```
-npm start --day=DAY --part=PART
+yarn start --day=DAY
 ```
-- Where `0<DAY<26` and `0<PART<3`
-- E.g: To run day 7, part 2 that would be `npm start --day=7 --part=2`
+- Where `0<DAY<11`
+- E.g: To run day 7: `yarn start --day=7`
 
 
 ## Util
@@ -63,7 +63,3 @@ There may a scenrio where we need to map each item in the input, for example let
 3
 ```
 We can do that like so: `parseInput({ split: { mapper: (n) => Number(n) * 2 } })`, the parameters of the function is identical to how it would be with [`Array#map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map#Syntax) (and it will be passed into map in the same way) which is `(e: string, i: number, a: string[])`.
-
----
-
-The [`setupDay`](https://github.com/izexi/aoc-ts-template/blob/master/src/util/index.ts#L51-L57) function was used to generate boilerplates for all the days, if you don't wish to have directories pre-setup for future days you can simply delete them and make use of this function when you want to setup a specific day.
